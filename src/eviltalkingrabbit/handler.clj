@@ -5,7 +5,8 @@
             [cemerick.friend :as friend]
             [hiccup.bootstrap.middleware :as bootstrap]
             [eviltalkingrabbit.github :as github]
-            [eviltalkingrabbit.pages :as pages]))
+            [eviltalkingrabbit.pages :as pages]
+            [eviltalkingrabbit.rabbit-api :as rabbit]))
 
 (def oauth-config
   {:client-id "2eff2815b4b2de698d65"
@@ -20,7 +21,8 @@
   (POST "/speak" [phrase :as request] 
     (friend/authorize #{::github/user}
       (println (str "Passing the rabbit the phrase: " phrase))
-      (pages/main-page :success)))
+      (let [result (rabbit/speak phrase)]
+        (pages/main-page result))))
   (friend/logout (ANY "/logout" request (ring.util.response/redirect "/")))
   (route/not-found "Not Found"))
 
