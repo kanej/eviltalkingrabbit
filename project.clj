@@ -3,6 +3,8 @@
   :url "http://example.com/FIXME"
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [compojure "1.1.1"]
+                 [hiccup "1.0.1"]
+                 [hiccup-bootstrap "0.1.1"]
                  [com.cemerick/friend "0.1.0"]
                  [friend-oauth2 "0.0.1"]
                  [cheshire "4.0.2"]]
