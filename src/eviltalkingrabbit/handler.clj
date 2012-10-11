@@ -14,9 +14,13 @@
 
 (defroutes app-routes
   (GET "/" [] "Evil Talking Rabbit")
-  (GET "/talk" request
+  (GET "/speak" request
     (friend/authorize #{::github/user} 
       (pages/main-page)))
+  (POST "/speak" [phrase :as request] 
+    (friend/authorize #{::github/user}
+      (println (str "Passing the rabbit the phrase: " phrase))
+      (pages/main-page :success)))
   (friend/logout (ANY "/logout" request (ring.util.response/redirect "/")))
   (route/not-found "Not Found"))
 
