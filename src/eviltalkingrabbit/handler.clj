@@ -2,6 +2,7 @@
   (:use compojure.core)
   (:require [compojure.handler :as handler]
             [compojure.route :as route]
+            [ring.adapter.jetty :as ring]
             [cemerick.friend :as friend]
             [hiccup.bootstrap.middleware :as bootstrap]
             [eviltalkingrabbit.github :as github]
@@ -31,3 +32,13 @@
     (github/authenticate oauth-config)
     (bootstrap/wrap-bootstrap-resources)
     (handler/site)))
+
+(defn start [port]
+  (ring/run-jetty #'app {:port (or port 3000) :join? false}))
+
+(defn -main []
+  (println (System/getenv "PORT"))
+  (let [port (System/getenv "PORT")]
+    (if (nil? port)
+      (start nil)
+      (start (Integer. port)))))
