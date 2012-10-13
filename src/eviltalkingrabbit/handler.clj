@@ -24,10 +24,12 @@
   (route/not-found "Not Found"))
 
 (def app
-  (-> app-routes
-    (github/authenticate (config/load-oauth-config))
-    (bootstrap/wrap-bootstrap-resources)
-    (handler/site)))
+  (let [oauth-config (config/load-oauth-config)]
+    (println oauth-config)
+    (-> app-routes
+      (github/authenticate oauth-config)
+      (bootstrap/wrap-bootstrap-resources)
+      (handler/site))))
 
 (defn start [port]
   (ring/run-jetty #'app {:port (or port 3000) :join? false}))
