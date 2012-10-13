@@ -12,5 +12,6 @@
   :main eviltalkingrabbit.handler
   :plugins [[lein-ring "0.7.3"]]
   :ring {:handler eviltalkingrabbit.handler/app}
+  :min-lein-version "2.0.0"
   :profiles
   {:dev {:dependencies [[ring-mock "0.1.3"]]}})
