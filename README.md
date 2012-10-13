@@ -1,6 +1,6 @@
 # eviltalkingrabbit
 
-FIXME
+Evil talking rabbit is a website providing a text entry box that is fired against the Nabaztag lives api. It provides a quick way of entering phrases for your Nabaztag bunny to speak.
 
 ## Prerequisites
 
@@ -16,4 +16,4 @@ To start a web server for the application, run:
 
 ## License
 
-Copyright © 2012 FIXME
+Copyright © 2012 John Kane
