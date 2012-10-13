@@ -5,7 +5,7 @@
             [ring.adapter.jetty :as ring]
             [cemerick.friend :as friend]
             [hiccup.bootstrap.middleware :as bootstrap]
-            [eviltalkingrabbit.config :as config]
+            [eviltalkingrabbit.config-loader :as config]
             [eviltalkingrabbit.github :as github]
             [eviltalkingrabbit.pages :as pages]
             [eviltalkingrabbit.rabbit-api :as rabbit]))
