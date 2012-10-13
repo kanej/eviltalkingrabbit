@@ -14,6 +14,10 @@ To start a web server for the application, run:
 
     lein ring server
 
+## Config
+
+FIXME
+
 ## License
 
 Copyright © 2012 John Kane
