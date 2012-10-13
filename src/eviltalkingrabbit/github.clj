@@ -21,14 +21,14 @@
   {:redirect-uri {:url "https://github.com/login/oauth/authorize"
                   :query {:client_id (:client-id client-config)
                           :response_type "code"
-                          :redirect_uri (str (:domain (:callback client-config)) (:path (:callback client-config)))
+                          :redirect_uri (str (:callback-domain client-config) (:callback-path client-config))
                           :scope "user"}}
 
    :access-token-uri {:url "https://github.com/login/oauth/access_token"
                       :query {:client_id (:client-id client-config)
                               :client_secret (:client-secret client-config)
                               :grant_type "authorization_code"
-                              :redirect_uri (str (:domain (:callback client-config)) (:path (:callback client-config)))
+                              :redirect_uri (str (:callback-domain client-config) (:callback-path client-config))
                               :code ""}}})
 
 (defn authenticate [ring-app oauth-config]
@@ -36,7 +36,10 @@
     ring-app
     {:allow-anon? true
      :workflows [(oauth2/workflow
-                  {:client-config oauth-config
+                  {:client-config {:client-id (:client-id oauth-config) 
+                                   :client-secret (:client-secret oauth-config)
+                                   :callback {:domain (:callback-domain oauth-config) :path (:callback-path oauth-config) }
+                                   } 
                    :uri-config (uri-config oauth-config) 
                    :access-token-parsefn access-token-parsefn
                    :config-auth config-auth})]}))

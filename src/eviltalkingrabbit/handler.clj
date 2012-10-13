@@ -5,14 +5,10 @@
             [ring.adapter.jetty :as ring]
             [cemerick.friend :as friend]
             [hiccup.bootstrap.middleware :as bootstrap]
+            [eviltalkingrabbit.config :as config]
             [eviltalkingrabbit.github :as github]
             [eviltalkingrabbit.pages :as pages]
             [eviltalkingrabbit.rabbit-api :as rabbit]))
-
-(def oauth-config
-  {:client-id "2eff2815b4b2de698d65"
-   :client-secret "89e2a9e1532c739d45667659aaef7aa64b5be544"
-   :callback {:domain "http://localhost:3000" :path "/github.callback"}})
 
 (defroutes app-routes
   (GET "/" [] "Evil Talking Rabbit")
@@ -29,7 +25,7 @@
 
 (def app
   (-> app-routes
-    (github/authenticate oauth-config)
+    (github/authenticate (config/load-oauth-config))
     (bootstrap/wrap-bootstrap-resources)
     (handler/site)))
 
@@ -37,7 +33,6 @@
   (ring/run-jetty #'app {:port (or port 3000) :join? false}))
 
 (defn -main []
-  (println (System/getenv "PORT"))
   (let [port (System/getenv "PORT")]
     (if (nil? port)
       (start nil)
