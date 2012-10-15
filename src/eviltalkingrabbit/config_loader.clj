@@ -12,17 +12,22 @@
   (when (.exists (clojure.java.io/file file-name))
     (read-string (slurp file-name))))
 
+(defn conditionally-assoc [config id value]
+  (if (not (nil? value))
+    (assoc config id value)
+    config))
+
 (defn get-env-config []
   (let [client-id (System/getenv "CLIENTID")
         client-secret (System/getenv "CLIENTSECRET")
         callback-domain (System/getenv "CALLBACKDOMAIN")
         callback-path (System/getenv "CALLBACKPATH")
         config {}]
-    (when (not (nil? client-id)) (assoc config :client-id client-id))
-    (when (not (nil? client-secret)) (assoc config :client-secret client-secret))
-    (when (not (nil? callback-domain)) (assoc config :callback-domain callback-domain))
-    (when (not (nil? callback-path)) (assoc config :callback-path callback-path))
-    config))
+    (-> config
+      (conditionally-assoc :client-id client-id)
+      (conditionally-assoc :client-secret client-secret)
+      (conditionally-assoc :callback-domain callback-domain)
+      (conditionally-assoc :callback-path callback-path))))
 
 (defn load-oauth-config []
   (let [file-config (get-file-config "config.clj")
