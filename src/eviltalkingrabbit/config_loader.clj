@@ -6,6 +6,7 @@
   :client-secret ""
   :callback-domain "http://localhost:3000"
   :callback-path "/github.callback"
+  :rabbit-serial ""
 })
 
 (defn get-file-config [file-name]
@@ -22,12 +23,15 @@
         client-secret (System/getenv "CLIENTSECRET")
         callback-domain (System/getenv "CALLBACKDOMAIN")
         callback-path (System/getenv "CALLBACKPATH")
+        rabbit-serial (System/getenv "RABBITSERIAL")
         config {}]
     (-> config
       (conditionally-assoc :client-id client-id)
       (conditionally-assoc :client-secret client-secret)
       (conditionally-assoc :callback-domain callback-domain)
-      (conditionally-assoc :callback-path callback-path))))
+      (conditionally-assoc :callback-path callback-path)
+      (conditionally-assoc :rabbit-serial rabbit-serial)
+      )))
 
 (defn load-oauth-config []
   (let [file-config (get-file-config "config.clj")

@@ -10,7 +10,9 @@
             [eviltalkingrabbit.pages :as pages]
             [eviltalkingrabbit.rabbit-api :as rabbit]))
 
-(defroutes app-routes
+(def *rabbit-serial* (atom "na"))
+
+(defroutes app-routes 
   (GET "/" [] "Evil Talking Rabbit")
   (GET "/speak" request
     (friend/authorize #{::github/user} 
@@ -18,14 +20,16 @@
   (POST "/speak" [phrase :as request] 
     (friend/authorize #{::github/user}
       (println (str "Passing the rabbit the phrase: " phrase))
-      (let [result (rabbit/speak phrase)]
+      (let [result (rabbit/speak @*rabbit-serial* phrase)]
         (pages/main-page result))))
   (friend/logout (ANY "/logout" request (ring.util.response/redirect "/")))
   (route/not-found "Not Found"))
 
 (def app
-  (let [oauth-config (config/load-oauth-config)]
+  (let [oauth-config (config/load-oauth-config)
+        rabbit-serial (:rabbit-serial oauth-config)]
     (println oauth-config)
+    (reset! *rabbit-serial* rabbit-serial)
     (-> app-routes
       (github/authenticate oauth-config)
       (bootstrap/wrap-bootstrap-resources)
